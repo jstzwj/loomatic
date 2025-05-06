@@ -833,7 +833,9 @@
       "select_model_placeholder": "选择模型",
       "endpoint_type": "终端类型",
       "endpoint_type_placeholder": "选择终端类型",
-      "clear_chat": "清除聊天记录"
+      "clear_chat": "清除聊天记录",
+      "balance": "余额",
+      "unlimited_quota": "无限额度"
     },
     "chat_dialog": {
       "title": "与 AI 聊天",

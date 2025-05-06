@@ -837,7 +837,9 @@
       "select_model_placeholder": "Select Model",
       "endpoint_type": "Endpoint Type",
       "endpoint_type_placeholder": "Select Endpoint Type",
-      "clear_chat": "Clear Chat"
+      "clear_chat": "Clear Chat",
+      "balance": "Balance",
+      "unlimited_quota": "Unlimited Quota"
     },
     "chat_dialog": {
       "title": "Chat with AI",

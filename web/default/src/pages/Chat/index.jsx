@@ -67,15 +67,12 @@ const ChatPage = () => {
       if (success && data) {
         const options = data.map(token => ({
           key: token.id,
-          text: `${token.name} (余量: ${formatQuota(token.remain_quota)})`,
+          text: `${token.name} (${t('chat.chat_settings.balance')}: ${formatQuota(token.remain_quota)})`,
           value: token.key,
-          description: token.unlimited_quota ? '无限额度' : `剩余: ${formatQuota(token.remain_quota)}`,
+          description: token.unlimited_quota ? t('chat.chat_settings.unlimited_quota') : `${t('chat.chat_settings.balance')}: ${formatQuota(token.remain_quota)}`,
           content: (
             <div>
               <div><strong>{token.name}</strong></div>
-              <div style={{ fontSize: '0.8em', color: 'gray' }}>
-                {token.unlimited_quota ? '无限额度' : `剩余额度: ${formatQuota(token.remain_quota)}`}
-              </div>
             </div>
           )
         }));
@@ -103,10 +100,6 @@ const ChatPage = () => {
 
       if (success && Array.isArray(data)) {
         const options = data.map(model => {
-          const parts = model.includes('/') ? model.split('/') : ['', model];
-          const provider = parts[0];
-          const modelName = parts[1];
-
           return {
             key: model,
             text: model,
@@ -114,11 +107,6 @@ const ChatPage = () => {
             content: (
               <div>
                 <div><strong>{model}</strong></div>
-                {provider && (
-                  <div style={{ fontSize: '0.8em', color: 'gray' }}>
-                    Provider: {provider}
-                  </div>
-                )}
               </div>
             )
           };

@@ -833,7 +833,9 @@
       "select_model_placeholder": "モデルを選択",
       "endpoint_type": "エンドポイントの種類",
       "endpoint_type_placeholder": "エンドポイントの種類を選択",
-      "clear_chat": "チャットをクリア"
+      "clear_chat": "チャットをクリア",
+      "balance": "残高",
+      "unlimited_quota": "無制限のクオータ"
     },
     "chat_dialog": {
       "title": "AIとチャット",
