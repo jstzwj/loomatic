@@ -20,7 +20,8 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './src')
+            '@': path.resolve(__dirname, './src'),
+            'micromark-extension-math': 'micromark-extension-llm-math'
         },
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
     },

@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  Grid, 
-  Card, 
-  Dropdown, 
-  Icon, 
-  Button, 
+import {
+  Grid,
+  Card,
+  Dropdown,
+  Icon,
+  Button,
   Divider,
   Loader
 } from 'semantic-ui-react';
 import ChatComponent from '../../components/ChatComponent';
 import OpenAI from 'openai';
+import { Tiktoken } from "js-tiktoken/lite";
+import o200k_base from "js-tiktoken/ranks/o200k_base";
 import {
   API,
   copy,
@@ -19,6 +21,8 @@ import {
   showWarning,
   timestamp2string,
 } from '../../helpers';
+import { v4 as uuidv4 } from 'uuid';
+import './ChatPanel.css';
 
 const ChatPage = () => {
   const { t } = useTranslation();
@@ -30,7 +34,7 @@ const ChatPage = () => {
   const [loadingModels, setLoadingModels] = useState(false);
   const [endpointType, setEndpointType] = useState('/v1/chat/completions');
   const [serverAddress, setServerAddress] = useState('');
-  
+
   const chatRef = useRef(null);
 
   useEffect(() => {
@@ -43,7 +47,7 @@ const ChatPage = () => {
     try {
       const res = await API.get('/api/status');
       const { success, message, data } = res.data;
-      
+
       if (success && data) {
         setServerAddress(data.server_address || '');
       } else {
@@ -59,7 +63,7 @@ const ChatPage = () => {
     try {
       const res = await API.get('/api/token/?p=0&order=');
       const { success, message, data } = res.data;
-      
+
       if (success && data) {
         const options = data.map(token => ({
           key: token.id,
@@ -75,9 +79,9 @@ const ChatPage = () => {
             </div>
           )
         }));
-        
+
         setApiKeyOptions(options);
-        
+
         if (options.length > 0 && !apiKeySource) {
           setApiKeySource(options[0].value);
         }
@@ -96,13 +100,13 @@ const ChatPage = () => {
     try {
       const res = await API.get('/api/user/available_models');
       const { success, message, data } = res.data;
-      
+
       if (success && Array.isArray(data)) {
         const options = data.map(model => {
           const parts = model.includes('/') ? model.split('/') : ['', model];
           const provider = parts[0];
           const modelName = parts[1];
-          
+
           return {
             key: model,
             text: model,
@@ -119,14 +123,14 @@ const ChatPage = () => {
             )
           };
         });
-        
+
         setModelOptions(options);
-        
+
         if (options.length > 0 && !selectedModel) {
           setSelectedModel(options[0].value);
         }
       } else {
-        showError(message || '获取可用模型失败');
+        showError(message || 'Failed to fetch available models. Please try again later.');
       }
     } catch (error) {
       showError('获取可用模型时发生错误: ' + (error.message || '未知错误'));
@@ -151,7 +155,7 @@ const ChatPage = () => {
   const clearChat = () => {
     if (chatRef.current && chatRef.current.clearChat) {
       chatRef.current.clearChat();
-      showSuccess('聊天记录已清空');
+      showSuccess('The chat has been cleared successfully!');
     }
   };
 
@@ -159,14 +163,13 @@ const ChatPage = () => {
     if (!selectedModel) return '';
     return selectedModel.includes('/') ? selectedModel.split('/')[1] : selectedModel;
   };
-
-  const handleSendMessage = async (message, userMessage, callback) => {
+  const handleSendMessage = async (message, userMessage, callback, updateCallback, finalCallback) => {
     if (!apiKeySource) {
-      showError('空的API密钥，请选择一个API密钥');
-      // 即使出错也调用回调，以便UI可以处理加载状态
+      showError('Empty API Key Source');
       callback({
+        id: uuidv4(),
         role: 'assistant',
-        content: '请先选择API密钥',
+        content: 'Please select an API key source and model first.',
         timestamp: new Date(),
         tokens: { in: 0, out: 0, total: 0 },
         time: '0s'
@@ -176,6 +179,7 @@ const ChatPage = () => {
     if (!apiKeySource || !selectedModel) {
       showError('请选择API密钥和模型');
       callback({
+        id: uuidv4(),
         role: 'assistant',
         content: '请先选择API密钥和模型',
         timestamp: new Date(),
@@ -188,6 +192,7 @@ const ChatPage = () => {
     if (!serverAddress) {
       showError('服务器地址未配置');
       callback({
+        id: uuidv4(),
         role: 'assistant',
         content: '服务器地址未配置',
         timestamp: new Date(),
@@ -203,11 +208,10 @@ const ChatPage = () => {
       const openai = new OpenAI({
         apiKey: apiKeySource,
         baseURL: llmUrl.toString(),
-        dangerouslyAllowBrowser: true // 仅用于演示，生产环境应该在后端处理
+        dangerouslyAllowBrowser: true
       });
 
       const currentMessages = chatRef.current.getMessages();
-      
       const messages = currentMessages.map(msg => ({
         role: msg.role,
         content: msg.content
@@ -217,50 +221,99 @@ const ChatPage = () => {
         role: 'user',
         content: message
       });
-      console.log('Sending messages:', messages); // 调试信息
 
       const startTime = Date.now();
+      const responseId = uuidv4();
 
-      const completion = await openai.chat.completions.create({
+      // 初始近似计算输入token
+      const tokenizer = new Tiktoken(o200k_base);
+      const approxInputTokens = messages.reduce((acc, msg) => {
+        return acc + tokenizer.encode(msg.content).length;
+      }, 0);
+
+      // 初始回调
+      callback({
+        id: responseId,
+        role: 'assistant',
+        content: '',
+        timestamp: new Date(),
+        tokens: {
+          in: approxInputTokens,
+          out: 0,
+          total: approxInputTokens
+        },
+        time: '0s'
+      });
+
+      let fullResponse = '';
+      let approxOutputTokens = 0;
+      let finalTokenUsage = null;
+
+      const stream = await openai.chat.completions.create({
         model: selectedModel,
         messages: messages,
         temperature: 0.7,
+        stream: true,
+        stream_options: {
+          include_usage: true  // 启用最终token统计
+        }
       });
 
-      const endTime = Date.now();
-      const duration = (endTime - startTime) / 1000;
+      for await (const chunk of stream) {
+        // 检查是否是最终使用统计块
+        if (chunk.usage && chunk.choices.length === 0) {
+          finalTokenUsage = chunk.usage;
+          continue;
+        }
 
-      // 构建回复消息
-      const assistantMessage = {
-        role: 'assistant',
-        content: completion.choices[0]?.message?.content || '没有收到回复内容',
-        timestamp: new Date(),
+        const content = chunk.choices[0]?.delta?.content || '';
+        fullResponse += content;
+
+        // 流式过程中的准确计算
+        approxOutputTokens += tokenizer.encode(content).length; // 使用编码器计算输出token数
+
+        // 实时更新消息
+        updateCallback(responseId, {
+          content: fullResponse,
+          tokens: {
+            in: finalTokenUsage?.prompt_tokens || approxInputTokens,
+            out: finalTokenUsage?.completion_tokens || approxOutputTokens,
+            total: finalTokenUsage?.total_tokens || (approxInputTokens + approxOutputTokens)
+          },
+          time: `${((Date.now() - startTime) / 1000).toFixed(2)}s`
+        });
+      }
+
+      // 最终更新（确保使用准确token数）
+      const duration = (Date.now() - startTime) / 1000;
+      updateCallback(responseId, {
+        content: fullResponse,
         tokens: {
-          in: completion.usage?.prompt_tokens || 0,
-          out: completion.usage?.completion_tokens || 0,
-          total: completion.usage?.total_tokens || 0
+          in: finalTokenUsage?.prompt_tokens || approxInputTokens,
+          out: finalTokenUsage?.completion_tokens || approxOutputTokens,
+          total: finalTokenUsage?.total_tokens || (approxInputTokens + approxOutputTokens)
         },
         time: `${duration.toFixed(2)}s`
-      };
-      
-      callback(assistantMessage);
+      });
     } catch (error) {
-      console.error('Failed to call OpenAI API:', error);
-      showError(`请求失败: ${error.message}`);
-      
-      // 即使出错也调用回调，以便UI可以处理加载状态
-      callback({
-        role: 'assistant',
-        content: `抱歉，请求出错: ${error.message}`,
+      console.error('API请求失败:', error);
+      const responseId = uuidv4();
+      updateCallback(responseId, {
+        content: `请求出错: ${error.message}`,
         timestamp: new Date(),
         tokens: { in: 0, out: 0, total: 0 },
         time: '0s'
       });
+      showError(`请求失败: ${error.message}`);
     }
+    finalCallback();
+  };
+  const texConfig = {
+    loader: { load: ["input/asciimath"] }
   };
 
   return (
-    <div className='dashboard-container'>
+    <div className='chatpanel-container'>
       <Grid>
         <Grid.Column width={4}>
           <Card fluid>
@@ -269,7 +322,7 @@ const ChatPage = () => {
                 <Icon name='setting' /> Chat Settings
               </Card.Header>
               <Divider />
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
                   <Icon name='key' /> API Key Source
@@ -287,7 +340,7 @@ const ChatPage = () => {
                   />
                 )}
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
                   <Icon name='code' /> Select Model
@@ -306,7 +359,7 @@ const ChatPage = () => {
                   />
                 )}
               </div>
-              
+
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
                   <Icon name='plug' /> Endpoint Type
@@ -326,9 +379,9 @@ const ChatPage = () => {
             </Card.Content>
           </Card>
         </Grid.Column>
-        
+
         <Grid.Column width={12}>
-          <ChatComponent 
+          <ChatComponent
             modelName={getDisplayModelName()}
             onSendMessage={handleSendMessage}
             ref={chatRef}

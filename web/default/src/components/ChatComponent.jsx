@@ -1,18 +1,26 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  Card, 
-  Form, 
-  Input, 
-  Button, 
-  Icon, 
+import {
+  Card,
+  Form,
+  Input,
+  Button,
+  Icon,
   Label,
   Message
 } from 'semantic-ui-react';
+import { v4 as uuidv4 } from 'uuid';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex';
+import rehypeHighlight from 'rehype-highlight';
+import 'katex/dist/katex.min.css';
+import 'highlight.js/styles/github.min.css';
 
-const ChatComponent = forwardRef(({ 
-  modelName = 'qwen-plus', 
-  initialMessages = [], 
+const ChatComponent = forwardRef(({
+  modelName = 'qwen-plus',
+  initialMessages = [],
   onSendMessage = null,
   showTokenInfo = true,
   maxHeight = '60vh'
@@ -20,6 +28,7 @@ const ChatComponent = forwardRef(({
   const { t } = useTranslation();
   const [messages, setMessages] = useState(initialMessages.length > 0 ? initialMessages : [
     {
+      id: uuidv4(),
       role: 'assistant',
       content: '在的！有什么可以帮您的吗？ 😊',
       timestamp: new Date(),
@@ -30,16 +39,20 @@ const ChatComponent = forwardRef(({
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Expose methods to parent component through ref
   useImperativeHandle(ref, () => ({
     clearChat: () => {
       setMessages([]);
     },
     addMessage: (message) => {
-      setMessages(prev => [...prev, message]);
+      setMessages(prev => [...prev, { ...message, id: uuidv4() }]);
     },
     getMessages: () => {
       return messages;
+    },
+    updateMessage: (id, updates) => {
+      setMessages(prev => prev.map(msg => 
+        msg.id === id ? { ...msg, ...updates } : msg
+      ));
     }
   }));
 
@@ -48,38 +61,75 @@ const ChatComponent = forwardRef(({
     
     // Add user message
     const userMessage = {
+      id: uuidv4(),
       role: 'user',
       content: inputMessage,
       timestamp: new Date()
     };
     
-    setMessages([...messages, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setLoading(true);
     
-    // If a custom onSendMessage handler is provided, use it
     if (onSendMessage) {
-      onSendMessage(inputMessage, userMessage, handleReceiveResponse);
+      onSendMessage(
+        inputMessage, 
+        userMessage, 
+        // 初始回调
+        (assistantMessage) => {
+          setMessages(prev => [...prev, { ...assistantMessage, id: assistantMessage.id || uuidv4() }]);
+        },
+        // 更新回调
+        (id, updates) => {
+          setMessages(prev => prev.map(msg => 
+            msg.id === id ? { ...msg, ...updates } : msg
+          ));
+        },
+        () => {
+          setLoading(false);
+        }
+      );
+      
     } else {
-      // Default behavior - simulate response
-      setTimeout(() => {
-        const assistantMessage = {
-          role: 'assistant',
-          content: '我已收到您的消息，正在处理中...',
-          timestamp: new Date(),
-          tokens: { in: Math.floor(Math.random() * 20) + 5, out: Math.floor(Math.random() * 30) + 10, total: 0 },
-          time: (Math.random() * 2).toFixed(2) + 's'
-        };
-        assistantMessage.tokens.total = assistantMessage.tokens.in + assistantMessage.tokens.out;
-        
-        handleReceiveResponse(assistantMessage);
-      }, 1000);
-    }
-  };
+      // 默认行为 - 模拟响应
+      const responseId = uuidv4();
+      setMessages(prev => [...prev, {
+        id: responseId,
+        role: 'assistant',
+        content: '',
+        timestamp: new Date(),
+        tokens: { in: 0, out: 0, total: 0 },
+        time: '0s'
+      }]);
 
-  const handleReceiveResponse = (assistantMessage) => {
-    setMessages(prev => [...prev, assistantMessage]);
-    setLoading(false);
+      let simulatedResponse = '我已收到您的消息，正在处理中...';
+      let currentText = '';
+      let charIndex = 0;
+      
+      const intervalId = setInterval(() => {
+        if (charIndex < simulatedResponse.length) {
+          currentText += simulatedResponse.charAt(charIndex);
+          charIndex++;
+          
+          setMessages(prev => prev.map(msg => 
+            msg.id === responseId ? { 
+              ...msg, 
+              content: currentText,
+              tokens: { in: 10, out: charIndex / 4, total: 10 + charIndex / 4 }
+            } : msg
+          ));
+        } else {
+          clearInterval(intervalId);
+          setMessages(prev => prev.map(msg => 
+            msg.id === responseId ? { 
+              ...msg, 
+              time: '1.23s' 
+            } : msg
+          ));
+          setLoading(false);
+        }
+      }, 50);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -99,7 +149,7 @@ const ChatComponent = forwardRef(({
             <Label style={{ marginLeft: '10px' }} size='small'>{modelName}</Label>
           </div>
         </Card.Header>
-        
+
         <div style={{ height: maxHeight, overflowY: 'auto', padding: '10px', marginTop: '10px' }} className="chat-messages">
           {messages.length === 0 && (
             <Message info>
@@ -107,13 +157,13 @@ const ChatComponent = forwardRef(({
               <p>发送消息开始与AI助手对话</p>
             </Message>
           )}
-          
+
           {messages.map((message, index) => (
             <div key={index} style={{ marginBottom: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                <div 
-                  style={{ 
-                    fontWeight: 'bold', 
+                <div
+                  style={{
+                    fontWeight: 'bold',
                     marginRight: '10px',
                     minWidth: '80px'
                   }}
@@ -121,8 +171,10 @@ const ChatComponent = forwardRef(({
                   {message.role === 'assistant' ? 'Assistant' : 'User'}
                 </div>
                 <div style={{ flex: 1 }}>
+                  <Markdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex, rehypeHighlight]}>
                   {message.content}
-                  
+                  </Markdown>
+
                   {showTokenInfo && message.tokens && (
                     <div style={{ fontSize: '0.8em', color: 'gray', marginTop: '5px' }}>
                       <Icon name='clock' /> {message.time}
@@ -137,7 +189,7 @@ const ChatComponent = forwardRef(({
           ))}
         </div>
       </Card.Content>
-      
+
       <Card.Content extra>
         <Form>
           <Input
@@ -147,10 +199,10 @@ const ChatComponent = forwardRef(({
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             action={
-              <Button 
-                color='blue' 
-                icon='send' 
-                content='Send' 
+              <Button
+                color='blue'
+                icon='send'
+                content='Send'
                 onClick={handleSendMessage}
                 loading={loading}
                 disabled={loading}
