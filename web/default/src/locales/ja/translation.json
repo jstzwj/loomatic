@@ -1,0 +1,827 @@
+{
+  "header": {
+    "home": "ホーム",
+    "channel": "チャネル",
+    "token": "トークン",
+    "redemption": "引き換え",
+    "topup": "チャージ",
+    "user": "ユーザー",
+    "dashboard": "ダッシュボード",
+    "log": "ログ",
+    "setting": "設定",
+    "about": "について",
+    "chat": "チャット",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "register": "登録"
+  },
+  "topup": {
+    "title": "チャージセンター",
+    "get_code": {
+      "title": "引き換えコードを取得",
+      "current_quota": "現在の利用可能額",
+      "button": "引き換えコードを今すぐ取得"
+    },
+    "redeem_code": {
+      "title": "引き換えコードでチャージ",
+      "placeholder": "引き換えコードを入力してください",
+      "paste": "貼り付け",
+      "paste_error": "クリップボードにアクセスできません。手動で貼り付けてください",
+      "submit": "今すぐ引き換え",
+      "submitting": "引き換え中...",
+      "empty_code": "引き換えコードを入力してください！",
+      "success": "チャージ成功！",
+      "request_failed": "リクエスト失敗",
+      "no_link": "スーパー管理者がチャージリンクを設定していません！"
+    }
+  },
+  "channel": {
+    "title": "チャネル管理",
+    "search": "チャネルのID、名前、キーを検索...",
+    "balance_notice": "OpenAIチャネルはキーによる残高取得をサポートしなくなったため、残高は0と表示されます。サポートされているチャネルタイプの場合、残高をクリックして更新してください。",
+    "test_notice": "チャネルテストはchatモデルのみサポートしており、優先的にgpt-3.5-turboを使用します。このモデルが利用できない場合は、設定したモデルリストの最初のモデルを使用します。",
+    "detail_notice": "詳細ボタンをクリックすると、残高と追加のテストモデルを設定できます。",
+    "table": {
+      "id": "ID",
+      "name": "名前",
+      "group": "グループ",
+      "type": "タイプ",
+      "status": "ステータス",
+      "response_time": "応答時間",
+      "balance": "残高",
+      "priority": "優先度",
+      "test_model": "テストモデル",
+      "actions": "操作",
+      "no_name": "なし",
+      "status_enabled": "有効",
+      "status_disabled": "無効",
+      "status_auto_disabled": "自動無効",
+      "status_disabled_tip": "このチャネルは手動で無効にされました",
+      "status_auto_disabled_tip": "このチャネルはプログラムにより自動的に無効にされました",
+      "status_unknown": "不明なステータス",
+      "not_tested": "未テスト",
+      "priority_tip": "チャネル選択の優先度。高いほど優先されます",
+      "select_test_model": "テストモデルを選択",
+      "click_to_update": "クリックして更新",
+      "balance_not_supported": "-"
+    },
+    "buttons": {
+      "test": "テスト",
+      "delete": "削除",
+      "confirm_delete": "チャネルを削除",
+      "enable": "有効化",
+      "disable": "無効化",
+      "edit": "編集",
+      "add": "新しいチャネルを追加",
+      "test_all": "すべてのチャネルをテスト",
+      "test_disabled": "無効チャネルをテスト",
+      "delete_disabled": "無効チャネルを削除",
+      "confirm_delete_disabled": "削除を確認",
+      "refresh": "更新",
+      "show_detail": "詳細",
+      "hide_detail": "詳細を隠す"
+    },
+    "messages": {
+      "test_success": "チャネル {{name}} のテストが成功しました。モデル {{model}}、所要時間 {{time}} 秒、モデル出力：{{message}}",
+      "test_all_started": "チャネルテストが開始されました。ページを更新して結果を確認してください。",
+      "delete_disabled_success": "無効チャネルをすべて削除しました。合計 {{count}} 個",
+      "balance_update_success": "チャネル {{name}} の残高が更新されました！",
+      "all_balance_updated": "すべての有効チャネルの残高が更新されました！",
+      "operation_success": "操作が正常に完了しました！"
+    },
+    "edit": {
+      "title_edit": "チャネル情報を更新",
+      "title_create": "新しいチャネルを作成",
+      "type": "タイプ",
+      "name": "名前",
+      "name_placeholder": "名前を入力してください",
+      "group": "グループ",
+      "group_placeholder": "このチャネルを使用できるグループを選択してください",
+      "group_addition": "システム設定ページでグループ倍率を編集して新しいグループを追加してください：",
+      "models": "モデル",
+      "models_placeholder": "このチャネルがサポートするモデルを選択してください",
+      "model_mapping": "モデルリダイレクト",
+      "model_mapping_placeholder": "オプション。リクエストボディのモデル名を変更するためのJSON文字列。キーはリクエストのモデル名、値は置換するモデル名です",
+      "system_prompt": "システムプロンプト",
+      "system_prompt_placeholder": "オプション。強制的に特定のシステムプロンプトを設定するために使用します。カスタムモデルとモデルリダイレクトと組み合わせて使用します。まず一意のカスタムモデル名を作成し、上記に入力した後、そのカスタムモデルをチャネルのネイティブサポートモデルにリダイレクトマッピングします",
+      "proxy_url": "プロキシ",
+      "proxy_url_placeholder": "オプション。API呼び出しにプロキシサイトを使用する場合、プロキシサイトのアドレスを入力してください。形式：https://domain.com。実際のリクエスト時にドメイン部分のみが置換されます。OpenAI SDKで要求されるBase URLを入力したい場合は、OpenAI互換チャネルタイプを使用してください",
+      "base_url": "Base URL",
+      "base_url_placeholder": "OpenAPI SDKで要求されるBase URL",
+      "key": "キー",
+      "key_placeholder": "キーを入力してください",
+      "batch": "一括作成",
+      "batch_placeholder": "キーを入力してください。1行に1つ",
+      "buttons": {
+        "cancel": "キャンセル",
+        "submit": "送信",
+        "fill_models": "関連モデルを入力",
+        "fill_all": "すべてのモデルを入力",
+        "clear": "すべてのモデルをクリア",
+        "add_custom": "入力",
+        "custom_placeholder": "カスタムモデル名を入力"
+      },
+      "messages": {
+        "name_required": "チャネル名とチャネルキーを入力してください！",
+        "models_required": "少なくとも1つのモデルを選択してください！",
+        "model_mapping_invalid": "モデルマッピングは有効なJSON形式である必要があります！",
+        "update_success": "チャネルが更新されました！",
+        "create_success": "チャネルが作成されました！"
+      },
+      "spark_version": "モデルバージョン",
+      "spark_version_placeholder": "星火大モデルのバージョンを入力してください。インターフェースアドレスのバージョン番号です。例：v2.1",
+      "knowledge_id": "知識庫ID",
+      "knowledge_id_placeholder": "知識庫IDを入力してください。例：123456",
+      "plugin_param": "プラグインパラメータ",
+      "plugin_param_placeholder": "プラグインパラメータを入力してください。X-DashScope-Pluginリクエストヘッダーの値です",
+      "coze_notice": "Cozeの場合、モデル名はBot IDです。`bot-`というプレフィックスを追加できます。例：`bot-123456`。",
+      "douban_notice": "豆包の場合、手動で",
+      "douban_notice_link": "モデル推論ページ",
+      "douban_notice_2": "推論アクセスポイントを作成し、アクセスポイント名をモデル名として使用します。例：`ep-20240608051426-tkxvl`。モデルリダイレクト機能を使用して通常のモデル名に変換できます。例：doubao-lite-4k -> ep-20240608051426-tkxvl（前者をJSONのキー、後者を値として）。doubao-lite-4kとep-20240608051426-tkxvlの両方をカスタムモデルとしてこのチャネルのモデルリストに入力する必要があることに注意してください。",
+      "aws_region_placeholder": "リージョン。例：us-west-2",
+      "aws_ak_placeholder": "AWS IAM Access Key",
+      "aws_sk_placeholder": "AWS IAM Secret Key",
+      "vertex_region_placeholder": "Vertex AIリージョン。例：us-east5",
+      "vertex_project_id": "Vertex AIプロジェクトID",
+      "vertex_project_id_placeholder": "Vertex AIプロジェクトID",
+      "vertex_credentials": "Google Cloud Application Default Credentials JSON",
+      "vertex_credentials_placeholder": "Google Cloud Application Default Credentials JSON",
+      "user_id": "ユーザーID",
+      "user_id_placeholder": "このキーを生成したユーザーID",
+      "key_prompts": {
+        "default": "チャネルに対応する認証キーを入力してください",
+        "zhipu": "次の形式で入力：APIKey|SecretKey",
+        "spark": "次の形式で入力：APPID|APISecret|APIKey",
+        "fastgpt": "次の形式で入力：APIKey-AppId。例：fastgpt-0sp2gtvfdgyi4k30jwlgwf1i-64f335d84283f05518e9e041",
+        "tencent": "次の形式で入力：AppId|SecretId|SecretKey"
+      }
+    }
+  },
+  "token": {
+    "title": "トークン管理",
+    "search": "トークンの名前を検索...",
+    "table": {
+      "name": "名前",
+      "status": "ステータス",
+      "used_quota": "使用済み額",
+      "remain_quota": "残額",
+      "created_time": "作成時間",
+      "expired_time": "有効期限",
+      "actions": "操作",
+      "no_name": "なし",
+      "never_expire": "無期限",
+      "unlimited": "無制限",
+      "status_enabled": "有効",
+      "status_disabled": "無効",
+      "status_expired": "期限切れ",
+      "status_depleted": "枯渇",
+      "status_unknown": "不明なステータス"
+    },
+    "buttons": {
+      "copy": "コピー",
+      "chat": "チャット",
+      "delete": "削除",
+      "confirm_delete": "トークンを削除",
+      "enable": "有効化",
+      "disable": "無効化",
+      "edit": "編集",
+      "add": "新しいトークンを追加",
+      "refresh": "更新"
+    },
+    "edit": {
+      "title_edit": "トークン情報を更新",
+      "title_create": "新しいトークンを作成",
+      "name": "名前",
+      "name_placeholder": "名前を入力してください",
+      "models": "モデル範囲",
+      "models_placeholder": "使用を許可するモデルを選択してください。空欄の場合は制限なし",
+      "ip_limit": "IP制限",
+      "ip_limit_placeholder": "アクセスを許可するネットワークセグメントを入力してください。例：192.168.0.0/24。複数のセグメントは英語のカンマで区切ってください",
+      "expire_time": "有効期限",
+      "expire_time_placeholder": "有効期限を入力してください。形式：yyyy-MM-dd HH:mm:ss。-1は無制限",
+      "quota_notice": "注意：トークンの額はトークン自体の最大使用量を制限するためだけに使用されます。実際の使用はアカウントの残額によって制限されます。",
+      "quota": "額",
+      "quota_placeholder": "額を入力してください",
+      "buttons": {
+        "never_expire": "無期限",
+        "expire_1_month": "1か月後に期限切れ",
+        "expire_1_day": "1日後に期限切れ",
+        "expire_1_hour": "1時間後に期限切れ",
+        "expire_1_minute": "1分後に期限切れ",
+        "unlimited_quota": "無制限の額に設定",
+        "cancel_unlimited": "無制限をキャンセル",
+        "submit": "送信",
+        "cancel": "キャンセル"
+      },
+      "messages": {
+        "update_success": "トークンが更新されました！",
+        "create_success": "トークンが作成されました。リストページでコピーしてトークンを取得してください！",
+        "expire_time_invalid": "有効期限の形式が間違っています！"
+      }
+    },
+    "copy_options": {
+      "raw": "元のトークンをコピー",
+      "ama": "AMAリンクをコピー",
+      "opencat": "OpenCatリンクをコピー",
+      "next": "NextChatリンクをコピー",
+      "lobe": "LobeChatリンクをコピー"
+    },
+    "messages": {
+      "copy_success": "クリップボードにコピーされました！",
+      "copy_failed": "クリップボードにコピーできませんでした。手動でコピーしてください。トークンは検索ボックスに入力されました。",
+      "operation_success": "操作が正常に完了しました！"
+    },
+    "sort": {
+      "placeholder": "並び替え",
+      "default": "デフォルト",
+      "by_remain": "残額で並び替え",
+      "by_used": "使用済み額で並び替え"
+    }
+  },
+  "common": {
+    "quota": {
+      "display": "相当金額：${{amount}}",
+      "display_short": "${{amount}}",
+      "unit": "$"
+    }
+  },
+  "redemption": {
+    "title": "引き換え管理",
+    "search": "引き換えコードのIDと名前を検索...",
+    "table": {
+      "id": "ID",
+      "name": "名前",
+      "status": "ステータス",
+      "quota": "額",
+      "created_time": "作成時間",
+      "redeemed_time": "引き換え時間",
+      "actions": "操作",
+      "no_name": "なし",
+      "not_redeemed": "未引き換え"
+    },
+    "buttons": {
+      "copy": "コピー",
+      "delete": "削除",
+      "confirm_delete": "削除を確認",
+      "enable": "有効化",
+      "disable": "無効化",
+      "edit": "編集",
+      "add": "新しい引き換えコードを追加",
+      "refresh": "更新"
+    },
+    "status": {
+      "unused": "未使用",
+      "disabled": "無効",
+      "used": "使用済み",
+      "unknown": "不明なステータス"
+    },
+    "edit": {
+      "title_edit": "引き換えコード情報を更新",
+      "title_create": "新しい引き換えコードを作成",
+      "name": "名前",
+      "name_placeholder": "名前を入力してください",
+      "quota": "額",
+      "quota_placeholder": "1つの引き換えコードに含まれる額を入力してください",
+      "count": "生成数",
+      "count_placeholder": "生成数を入力してください",
+      "buttons": {
+        "submit": "送信",
+        "cancel": "キャンセル"
+      }
+    },
+    "messages": {
+      "update_success": "引き換えコードが更新されました！",
+      "create_success": "引き換えコードが作成されました！"
+    }
+  },
+  "log": {
+    "title": "操作ログ",
+    "search": "ログを検索...",
+    "usage_details": "使用明細",
+    "total_quota": "総消費額",
+    "click_to_view": "クリックして表示",
+    "type": {
+      "select": "明細分類を選択",
+      "all": "すべて",
+      "topup": "チャージ",
+      "usage": "消費",
+      "admin": "管理",
+      "system": "システム",
+      "test": "テスト"
+    },
+    "table": {
+      "time": "時間",
+      "channel": "チャネル",
+      "type": "タイプ",
+      "model": "モデル",
+      "username": "ユーザー名",
+      "token_name": "トークン名",
+      "token_name_placeholder": "オプション",
+      "model_name": "モデル名",
+      "model_name_placeholder": "オプション",
+      "start_time": "開始時間",
+      "end_time": "終了時間",
+      "channel_id": "チャネルID",
+      "channel_id_placeholder": "オプション",
+      "username_placeholder": "オプション",
+      "prompt_tokens": "プロンプトトークン消費",
+      "completion_tokens": "補完トークン消費",
+      "quota": "額",
+      "detail": "詳細"
+    },
+    "buttons": {
+      "query": "操作",
+      "submit": "クエリ",
+      "refresh": "更新"
+    }
+  },
+  "user": {
+    "title": "ユーザー管理",
+    "edit": {
+      "title": "ユーザー情報を更新",
+      "username": "ユーザー名",
+      "username_placeholder": "新しいユーザー名を入力してください",
+      "password": "パスワード",
+      "password_placeholder": "新しいパスワードを入力してください。最短8文字",
+      "display_name": "表示名",
+      "display_name_placeholder": "新しい表示名を入力してください",
+      "group": "グループ",
+      "group_placeholder": "グループを選択してください",
+      "group_addition": "システム設定ページでグループ倍率を編集して新しいグループを追加してください：",
+      "quota": "残額",
+      "quota_placeholder": "新しい残額を入力してください",
+      "github_id": "バインド済みGitHubアカウント",
+      "github_id_placeholder": "読み取り専用。ユーザーが個人設定ページの関連ボタンでバインドする必要があります。直接変更できません",
+      "wechat_id": "バインド済みWeChatアカウント",
+      "wechat_id_placeholder": "読み取り専用。ユーザーが個人設定ページの関連ボタンでバインドする必要があります。直接変更できません",
+      "email": "バインド済みメールアカウント",
+      "email_placeholder": "読み取り専用。ユーザーが個人設定ページの関連ボタンでバインドする必要があります。直接変更できません",
+      "buttons": {
+        "submit": "送信",
+        "cancel": "キャンセル"
+      }
+    },
+    "add": {
+      "title": "新しいユーザーアカウントを作成"
+    },
+    "messages": {
+      "update_success": "ユーザー情報が更新されました！",
+      "create_success": "ユーザーアカウントが作成されました！",
+      "operation_success": "操作が正常に完了しました！"
+    },
+    "search": "ユーザーを検索...",
+    "table": {
+      "id": "ID",
+      "username": "ユーザー名",
+      "group": "グループ",
+      "quota": "額",
+      "role_text": "役割",
+      "status_text": "ステータス",
+      "actions": "操作",
+      "remaining_quota": "残額",
+      "used_quota": "使用済み額",
+      "request_count": "リクエスト数",
+      "role_types": {
+        "normal": "一般ユーザー",
+        "admin": "管理者",
+        "super_admin": "スーパー管理者",
+        "unknown": "不明な役割"
+      },
+      "status_types": {
+        "activated": "有効",
+        "banned": "禁止",
+        "unknown": "不明なステータス"
+      },
+      "sort": {
+        "default": "デフォルト",
+        "by_quota": "残額で並び替え",
+        "by_used_quota": "使用済み額で並び替え",
+        "by_request_count": "リクエスト数で並び替え"
+      },
+      "sort_by": "並び替え"
+    },
+    "buttons": {
+      "add": "新しいユーザーを追加",
+      "delete": "削除",
+      "delete_user": "ユーザーを削除",
+      "enable": "有効化",
+      "disable": "無効化",
+      "edit": "編集",
+      "promote": "昇格",
+      "demote": "降格"
+    }
+  },
+  "dashboard": {
+    "charts": {
+      "requests": {
+        "title": "モデルリクエストトレンド",
+        "tooltip": "リクエスト数"
+      },
+      "quota": {
+        "title": "額消費トレンド",
+        "tooltip": "消費額"
+      },
+      "tokens": {
+        "title": "トークン消費トレンド",
+        "tooltip": "トークン数"
+      }
+    },
+    "statistics": {
+      "title": "統計",
+      "tooltip": {
+        "date": "日付",
+        "value": "値"
+      }
+    }
+  },
+  "setting": {
+    "title": "システム設定",
+    "tabs": {
+      "personal": "個人設定",
+      "operation": "運用設定",
+      "system": "システム設定",
+      "other": "その他の設定"
+    },
+    "personal": {
+      "general": {
+        "title": "一般設定",
+        "system_token_notice": "注意：ここで生成されるトークンはシステム管理用であり、OpenAI関連サービスのリクエスト用ではありません。",
+        "buttons": {
+          "update_profile": "個人情報を更新",
+          "generate_token": "システムアクセストークンを生成",
+          "copy_invite": "招待リンクをコピー",
+          "delete_account": "個人アカウントを削除"
+        }
+      },
+      "binding": {
+        "title": "アカウントバインド",
+        "buttons": {
+          "bind_wechat": "WeChatアカウントをバインド",
+          "bind_github": "GitHubアカウントをバインド",
+          "bind_email": "メールアドレスをバインド",
+          "bind_lark": "飛書アカウントをバインド"
+        },
+        "wechat": {
+          "title": "WeChatバインド",
+          "description": "WeChatで公式アカウントをスキャンし、「認証コード」と入力して認証コードを取得（3分間有効）",
+          "verification_code": "認証コード",
+          "bind": "バインド"
+        },
+        "email": {
+          "title": "メールアドレスをバインド",
+          "email_placeholder": "メールアドレスを入力",
+          "code_placeholder": "認証コード",
+          "get_code": "認証コードを取得",
+          "get_code_retry": "再送信({{countdown}})",
+          "bind": "バインドを確認",
+          "cancel": "キャンセル"
+        }
+      },
+      "delete_account": {
+        "title": "危険な操作",
+        "warning": "自分のアカウントを削除しようとしています。すべてのデータが消去され、復元できません",
+        "confirm_placeholder": "削除を確認するためにアカウント名 {{username}} を入力してください",
+        "buttons": {
+          "confirm": "削除を確認",
+          "cancel": "キャンセル"
+        }
+      }
+    },
+    "system": {
+      "general": {
+        "title": "一般設定",
+        "server_address": "サーバーアドレス",
+        "server_address_placeholder": "例：https://yourdomain.com",
+        "buttons": {
+          "update": "サーバーアドレスを更新"
+        }
+      },
+      "login": {
+        "title": "ログイン登録設定",
+        "password_login": "パスワードによるログインを許可",
+        "password_register": "パスワードによる登録を許可",
+        "email_verification": "パスワード登録時にメール認証が必要",
+        "github_oauth": "GitHubアカウントによるログイン＆登録を許可",
+        "wechat_login": "WeChatによるログイン＆登録を許可",
+        "registration": "新規ユーザー登録を許可（「いいえ」の場合、新規ユーザーはどの方法でも登録できません）",
+        "turnstile": "Turnstileユーザー検証を有効化"
+      },
+      "email_restriction": {
+        "title": "メールドメインホワイトリスト設定",
+        "subtitle": "悪意のあるユーザーが一時メールで大量登録するのを防ぐため",
+        "enable": "メールドメインホワイトリストを有効化",
+        "allowed_domains": "許可されたメールドメイン",
+        "add_domain": "新しい許可メールドメインを追加",
+        "add_domain_placeholder": "新しい許可メールドメインを入力",
+        "buttons": {
+          "fill": "入力",
+          "save": "メールドメインホワイトリスト設定を保存"
+        }
+      },
+      "smtp": {
+        "title": "SMTP設定",
+        "subtitle": "システムのメール送信をサポートするため",
+        "server": "SMTPサーバーアドレス",
+        "server_placeholder": "例：smtp.qq.com",
+        "port": "SMTPポート",
+        "port_placeholder": "デフォルト: 587",
+        "account": "SMTPアカウント",
+        "account_placeholder": "通常はメールアドレス",
+        "from": "SMTP送信者メール",
+        "from_placeholder": "通常はメールアドレスと同じ",
+        "token": "SMTPアクセス認証情報",
+        "token_placeholder": "機密情報はフロントエンドに表示されません",
+        "buttons": {
+          "save": "SMTP設定を保存"
+        }
+      },
+      "github": {
+        "title": "GitHub OAuth App設定",
+        "subtitle": "GitHubによるログイン登録をサポートするため",
+        "manage_link": "こちらをクリック",
+        "manage_text": "GitHub OAuth Appを管理",
+        "url_notice": "Homepage URLに {{server_url}}、Authorization callback URLに {{callback_url}} を入力",
+        "client_id": "GitHub Client ID",
+        "client_id_placeholder": "登録したGitHub OAuth APPのIDを入力",
+        "client_secret": "GitHub Client Secret",
+        "client_secret_placeholder": "機密情報はフロントエンドに表示されません",
+        "buttons": {
+          "save": "GitHub OAuth設定を保存"
+        }
+      },
+      "lark": {
+        "title": "飛書認証ログイン設定",
+        "subtitle": "飛書によるログイン登録をサポートするため",
+        "manage_link": "こちらをクリック",
+        "manage_text": "飛書アプリを管理",
+        "url_notice": "ホームページリンクに {{server_url}}、リダイレクトURLに {{callback_url}} を入力",
+        "client_id": "App ID",
+        "client_id_placeholder": "App IDを入力",
+        "client_secret": "App Secret",
+        "client_secret_placeholder": "機密情報はフロントエンドに表示されません",
+        "buttons": {
+          "save": "飛書OAuth設定を保存"
+        }
+      },
+      "wechat": {
+        "title": "WeChat Server設定",
+        "subtitle": "WeChatによるログイン登録をサポートするため",
+        "learn_more": "WeChat Serverについて",
+        "server_address": "WeChat Serverサーバーアドレス",
+        "server_address_placeholder": "例：https://yourdomain.com",
+        "token": "WeChat Serverアクセス認証情報",
+        "token_placeholder": "機密情報はフロントエンドに表示されません",
+        "qrcode": "WeChat公式アカウントQRコード画像リンク",
+        "qrcode_placeholder": "画像リンクを入力",
+        "buttons": {
+          "save": "WeChat Server設定を保存"
+        }
+      },
+      "turnstile": {
+        "title": "Turnstile設定",
+        "subtitle": "ユーザー検証をサポートするため",
+        "manage_link": "こちらをクリック",
+        "manage_text": "Turnstile Sitesを管理。Invisible Widget Typeを推奨",
+        "site_key": "Turnstile Site Key",
+        "site_key_placeholder": "登録したTurnstile Site Keyを入力",
+        "secret_key": "Turnstile Secret Key",
+        "secret_key_placeholder": "機密情報はフロントエンドに表示されません",
+        "buttons": {
+          "save": "Turnstile設定を保存"
+        }
+      },
+      "password_login": {
+        "warning": {
+          "title": "警告",
+          "content": "パスワードログインを無効にすると、他のログイン方法にバインドされていないすべてのユーザー（管理者を含む）がパスワードでログインできなくなります。無効にしますか？",
+          "buttons": {
+            "confirm": "確定",
+            "cancel": "キャンセル"
+          }
+        }
+      }
+    },
+    "operation": {
+      "quota": {
+        "title": "額設定",
+        "new_user": "新規ユーザー初期額",
+        "new_user_placeholder": "例：100",
+        "pre_consume": "リクエスト事前消費額",
+        "pre_consume_placeholder": "リクエスト終了後に清算",
+        "inviter_reward": "新規ユーザー招待報酬額",
+        "inviter_reward_placeholder": "例：2000",
+        "invitee_reward": "新規ユーザー招待コード使用報酬額",
+        "invitee_reward_placeholder": "例：1000",
+        "buttons": {
+          "save": "額設定を保存"
+        }
+      },
+      "ratio": {
+        "title": "倍率設定",
+        "model": {
+          "title": "モデル倍率",
+          "placeholder": "JSONテキスト。キーはモデル名、値は倍率"
+        },
+        "completion": {
+          "title": "補完倍率",
+          "placeholder": "JSONテキスト。キーはモデル名、値は倍率。この設定はモデル補完倍率をプロンプト倍率に対する比率として強制的に上書きします。One APIの内部比率を上書きするために使用します"
+        },
+        "group": {
+          "title": "グループ倍率",
+          "placeholder": "JSONテキスト。キーはグループ名、値は倍率"
+        },
+        "buttons": {
+          "save": "倍率設定を保存"
+        }
+      },
+      "log": {
+        "title": "ログ設定",
+        "enable_consume": "額消費ログ記録を有効化",
+        "target_time": "対象時間",
+        "buttons": {
+          "clean": "履歴ログをクリーン"
+        }
+      },
+      "monitor": {
+        "title": "モニター設定",
+        "max_response_time": "最大応答時間",
+        "max_response_time_placeholder": "秒単位。すべてのチャネルをテストする際、この時間を超えると自動的にチャネルが無効になります",
+        "quota_reminder": "額リマインダー閾値",
+        "quota_reminder_placeholder": "この額を下回るとユーザーにメールリマインダーが送信されます",
+        "auto_disable": "失敗時に自動的にチャネルを無効化",
+        "auto_enable": "成功時に自動的にチャネルを有効化",
+        "buttons": {
+          "save": "モニター設定を保存"
+        }
+      },
+      "general": {
+        "title": "一般設定",
+        "topup_link": "チャージリンク",
+        "topup_link_placeholder": "例：カード販売サイトの購入リンク",
+        "chat_link": "チャットページリンク",
+        "chat_link_placeholder": "例：ChatGPT Next Webのデプロイアドレス",
+        "quota_per_unit": "1ドルあたりの額",
+        "quota_per_unit_placeholder": "1単位通貨で交換できる額",
+        "retry_times": "失敗再試行回数",
+        "retry_times_placeholder": "失敗再試行回数",
+        "display_in_currency": "額を通貨形式で表示",
+        "display_token_stat": "Billing関連APIでトークン額ではなくユーザー額を表示",
+        "approximate_token": "計算量を減らすためにトークン数を近似値で見積もる",
+        "buttons": {
+          "save": "一般設定を保存"
+        }
+      }
+    },
+    "other": {
+      "notice": {
+        "title": "告知設定",
+        "content": "告知内容",
+        "content_placeholder": "新しい告知内容を入力。Markdown & HTMLコードをサポート",
+        "buttons": {
+          "save": "告知を保存"
+        }
+      },
+      "system": {
+        "title": "システム設定",
+        "name": "システム名",
+        "name_placeholder": "システム名を入力",
+        "logo": "ロゴ画像アドレス",
+        "logo_placeholder": "ロゴ画像アドレスを入力",
+        "theme": {
+          "title": "テーマ名",
+          "link": "現在利用可能なテーマ",
+          "placeholder": "テーマ名を入力"
+        },
+        "buttons": {
+          "save_name": "システム名を設定",
+          "save_logo": "ロゴを設定",
+          "save_theme": "テーマを設定（再起動で有効）"
+        }
+      },
+      "content": {
+        "title": "コンテンツ設定",
+        "homepage": {
+          "title": "ホームページコンテンツ",
+          "placeholder": "ここにホームページの内容を入力してください。Markdown & HTMLコードに対応しています。設定後、ホームページのステータス情報は表示されなくなります。入力がリンクの場合、そのリンクがiframeのsrc属性として使用され、任意のウェブページをホームページとして設定できます。"
+        },
+        "about": {
+          "title": "About",
+          "placeholder": "ここに新しいAboutの内容を入力してください。Markdown & HTMLコードに対応しています。入力がリンクの場合、そのリンクがiframeのsrc属性として使用され、任意のウェブページをAboutページとして設定できます。"
+        },
+        "footer": {
+          "title": "フッター",
+          "placeholder": "ここに新しいフッターを入力してください。空欄の場合はデフォルトのフッターが使用されます。HTMLコードに対応しています"
+        },
+        "buttons": {
+          "save_homepage": "ホームページを保存",
+          "save_about": "Aboutを保存",
+          "save_footer": "フッターを設定"
+        }
+      },
+      "copyright": {
+        "notice": "One APIの著作権表示を削除するには、まず許可を得る必要があります。プロジェクトのメンテナンスには多大な労力がかかります。このプロジェクトがあなたにとって意味があるなら、ぜひ積極的にサポートしてください。"
+      }
+    }
+  },
+  "about": {
+    "title": "About",
+    "description": "One APIはオープンソースのAPI管理・プロキシプラットフォームです。",
+    "repository": "プロジェクトURL：",
+    "loading_failed": "読み込みに失敗しました"
+  },
+  "footer": {
+    "built_by": "開発者：",
+    "built_by_name": "JustSong",
+    "license": "、ソースコードは",
+    "mit": "MITライセンスに準拠"
+  },
+  "home": {
+    "welcome": {
+      "title": "One APIへようこそ",
+      "description": "One APIはLLM APIの管理・配信システムで、主要ベンダーのLLM APIをより効果的に管理・使用するのに役立ちます。",
+      "login_notice": "ご利用の際は、まずログインまたは登録してください。"
+    },
+    "system_status": {
+      "title": "システムステータス",
+      "info": {
+        "title": "システム情報",
+        "name": "名称：",
+        "version": "バージョン：",
+        "source": "ソース：",
+        "source_link": "GitHubリポジトリ",
+        "start_time": "起動時間："
+      },
+      "config": {
+        "title": "システム設定",
+        "email_verify": "メール認証：",
+        "github_oauth": "GitHub認証：",
+        "wechat_login": "WeChat認証：",
+        "turnstile": "Turnstile検証：",
+        "enabled": "有効",
+        "disabled": "無効"
+      }
+    },
+    "loading_failed": "ホームページの読み込みに失敗しました..."
+  },
+  "auth": {
+    "login": {
+      "title": "ユーザーログイン",
+      "username": "ユーザー名 / メールアドレス",
+      "password": "パスワード",
+      "button": "ログイン",
+      "forgot_password": "パスワードをお忘れですか？",
+      "reset_password": "リセットする",
+      "no_account": "アカウントをお持ちでない場合",
+      "register": "登録する",
+      "other_methods": "他の方法でログイン",
+      "wechat": {
+        "scan_tip": "WeChatでQRコードをスキャンして公式アカウントをフォローし、「認証コード」と入力して認証コードを取得してください（3分間有効）",
+        "code_placeholder": "認証コード"
+      }
+    },
+    "register": {
+      "title": "新規ユーザー登録",
+      "username": "ユーザー名を入力（最大12文字）",
+      "password": "パスワードを入力（8-20文字）",
+      "confirm_password": "パスワード再入力",
+      "email": "メールアドレスを入力",
+      "verification_code": "認証コードを入力",
+      "get_code": "認証コードを取得",
+      "get_code_retry": "再試行 ({{countdown}})",
+      "button": "登録",
+      "has_account": "既にアカウントをお持ちの場合",
+      "login": "ログインする"
+    },
+    "reset": {
+      "title": "パスワードリセット",
+      "email": "メールアドレス",
+      "button": "送信",
+      "notice": "リセットリンクを含むメールが送信されますので、ご確認ください。",
+      "confirm": {
+        "title": "パスワードリセット確認",
+        "new_password": "新しいパスワード",
+        "button": "送信",
+        "button_disabled": "パスワードリセット完了",
+        "notice": "新しいパスワードが生成されました。パスワード欄をクリックするか、上記のボタンでコピーしてください。すぐにログインしてパスワードを変更してください！"
+      }
+    }
+  },
+  "messages": {
+    "success": {
+      "login": "ログイン成功！",
+      "register": "登録成功！",
+      "verification_code": "認証コードを送信しました。メールをご確認ください！",
+      "password_reset": "リセットメールを送信しました。メールをご確認ください！"
+    },
+    "error": {
+      "login_expired": "ログインされていないか、セッションが切れています。再度ログインしてください！",
+      "password_length": "パスワードは8文字以上必要です！",
+      "password_mismatch": "入力されたパスワードが一致しません",
+      "turnstile_wait": "数秒待ってから再試行してください。Turnstileがユーザー環境をチェック中です！",
+      "root_password": "すぐにデフォルトパスワードを変更してください！"
+    },
+    "notice": {
+      "password_copied": "新しいパスワードをクリップボードにコピーしました：{{password}}"
+    }
+  }
+}

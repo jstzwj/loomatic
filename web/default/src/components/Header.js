@@ -30,6 +30,11 @@ let headerButtons = [
     admin: true,
   },
   {
+    name: 'header.chat',
+    to: '/chat',
+    icon: 'comments',
+  },
+  {
     name: 'header.token',
     to: '/token',
     icon: 'key',
@@ -72,14 +77,6 @@ let headerButtons = [
     icon: 'info circle',
   },
 ];
-
-if (localStorage.getItem('chat_link')) {
-  headerButtons.splice(1, 0, {
-    name: 'header.chat',
-    to: '/chat',
-    icon: 'comments',
-  });
-}
 
 const Header = () => {
   const { t, i18n } = useTranslation();
@@ -142,6 +139,7 @@ const Header = () => {
   const languageOptions = [
     { key: 'zh', text: '中文', value: 'zh' },
     { key: 'en', text: 'English', value: 'en' },
+    { key: 'ja', text: '日本語', value: 'ja' },
   ];
 
   const changeLanguage = (language) => {

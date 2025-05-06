@@ -1,12 +1,13 @@
-FROM --platform=$BUILDPLATFORM node:16 AS builder
+FROM --platform=linux/amd64 node:23 AS builder
 
 WORKDIR /web
 COPY ./VERSION .
 COPY ./web .
 
-RUN npm install --prefix /web/default & \
-    npm install --prefix /web/berry & \
-    npm install --prefix /web/air & \
+RUN npm install -g npm@11.3.0
+RUN npm install --legacy-peer-deps --prefix /web/default & \
+    npm install --legacy-peer-deps --prefix /web/berry & \
+    npm install --legacy-peer-deps --prefix /web/air & \
     wait
 
 RUN DISABLE_ESLINT_PLUGIN='true' REACT_APP_VERSION=$(cat ./VERSION) npm run build --prefix /web/default & \
@@ -15,6 +16,8 @@ RUN DISABLE_ESLINT_PLUGIN='true' REACT_APP_VERSION=$(cat ./VERSION) npm run buil
     wait
 
 FROM golang:alpine AS builder2
+
+ENV GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
 
 RUN apk add --no-cache \
     gcc \
