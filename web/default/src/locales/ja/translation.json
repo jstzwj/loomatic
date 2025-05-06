@@ -823,5 +823,29 @@
     "notice": {
       "password_copied": "新しいパスワードをクリップボードにコピーしました：{{password}}"
     }
+  },
+  "chat": {
+    "chat_settings": {
+      "title": "チャット設定",
+      "api_key": "APIキーのソース",
+      "api_key_placeholder": "APIキーを選択",
+      "select_model": "モデルを選択",
+      "select_model_placeholder": "モデルを選択",
+      "endpoint_type": "エンドポイントの種類",
+      "endpoint_type_placeholder": "エンドポイントの種類を選択",
+      "clear_chat": "チャットをクリア"
+    },
+    "chat_dialog": {
+      "title": "AIとチャット",
+      "start_conversation": "新しい会話を開始",
+      "start_conversation_message": "メッセージを送信してAIアシスタントとの新しい会話を開始してください。",
+      "input_placeholder": "メッセージを入力...（改行は Shift+Enter）",
+      "send_button": "送信",
+      "message_in": "入力",
+      "message_out": "出力",
+      "message_total": "合計",
+      "assistant_name": "アシスタント",
+      "user_name": "ユーザー"
+    }
   }
 }

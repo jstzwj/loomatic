@@ -319,13 +319,13 @@ const ChatPage = () => {
           <Card fluid>
             <Card.Content>
               <Card.Header>
-                <Icon name='setting' /> Chat Settings
+                <Icon name='setting' /> {t('chat.chat_settings.title')}
               </Card.Header>
               <Divider />
 
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
-                  <Icon name='key' /> API Key Source
+                  <Icon name='key' /> {t('chat.chat_settings.api_key')}
                 </label>
                 {loadingTokens ? (
                   <Loader active inline='centered' size='small' />
@@ -336,14 +336,14 @@ const ChatPage = () => {
                     options={apiKeyOptions}
                     value={apiKeySource}
                     onChange={(e, { value }) => setApiKeySource(value)}
-                    placeholder="Select API Key"
+                    placeholder={t('chat.chat_settings.api_key_placeholder')}
                   />
                 )}
               </div>
 
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
-                  <Icon name='code' /> Select Model
+                  <Icon name='code' /> {t('chat.chat_settings.select_model')}
                 </label>
                 {loadingModels ? (
                   <Loader active inline='centered' size='small' />
@@ -354,7 +354,7 @@ const ChatPage = () => {
                     options={modelOptions}
                     value={selectedModel}
                     onChange={(e, { value }) => setSelectedModel(value)}
-                    placeholder="Select Model"
+                    placeholder={t('chat.chat_settings.select_model_placeholder')}
                     disabled={modelOptions.length === 0}
                   />
                 )}
@@ -362,7 +362,7 @@ const ChatPage = () => {
 
               <div style={{ marginBottom: '15px' }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
-                  <Icon name='plug' /> Endpoint Type
+                  <Icon name='plug' /> {t('chat.chat_settings.endpoint_type')}
                 </label>
                 <Dropdown
                   fluid
@@ -374,7 +374,7 @@ const ChatPage = () => {
               </div>
 
               <Button fluid onClick={clearChat}>
-                <Icon name='trash' /> Clear Chat
+                <Icon name='trash' /> {t('chat.chat_settings.clear_chat')}
               </Button>
             </Card.Content>
           </Card>

@@ -145,7 +145,7 @@ const ChatComponent = forwardRef(({
         <Card.Header className='header'>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Icon name='comment' />
-            <span>Assistant</span>
+            <span>{t('chat.chat_dialog.title')} </span>
             <Label style={{ marginLeft: '10px' }} size='small'>{modelName}</Label>
           </div>
         </Card.Header>
@@ -153,8 +153,8 @@ const ChatComponent = forwardRef(({
         <div style={{ height: maxHeight, overflowY: 'auto', padding: '10px', marginTop: '10px' }} className="chat-messages">
           {messages.length === 0 && (
             <Message info>
-              <Message.Header>开始新的对话</Message.Header>
-              <p>发送消息开始与AI助手对话</p>
+              <Message.Header>{t('chat.chat_dialog.start_conversation')}</Message.Header>
+              <p>{t('chat.chat_dialog.start_conversation_message')}</p>
             </Message>
           )}
 
@@ -168,7 +168,7 @@ const ChatComponent = forwardRef(({
                     minWidth: '80px'
                   }}
                 >
-                  {message.role === 'assistant' ? 'Assistant' : 'User'}
+                  {message.role === 'assistant' ? t('chat.chat_dialog.assistant_name') : t('chat.chat_dialog.user_name')}
                 </div>
                 <div style={{ flex: 1 }}>
                   <Markdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex, rehypeHighlight]}>
@@ -178,9 +178,9 @@ const ChatComponent = forwardRef(({
                   {showTokenInfo && message.tokens && (
                     <div style={{ fontSize: '0.8em', color: 'gray', marginTop: '5px' }}>
                       <Icon name='clock' /> {message.time}
-                      <Icon name='arrow right' style={{ marginLeft: '10px' }} /> In: {message.tokens.in}
-                      <Icon name='arrow left' style={{ marginLeft: '10px' }} /> Out: {message.tokens.out}
-                      <Icon name='calculator' style={{ marginLeft: '10px' }} /> Total: {message.tokens.total}
+                      <Icon name='arrow right' style={{ marginLeft: '10px' }} /> {t('chat.chat_dialog.message_in')}: {message.tokens.in}
+                      <Icon name='arrow left' style={{ marginLeft: '10px' }} /> {t('chat.chat_dialog.message_out')}: {message.tokens.out}
+                      <Icon name='calculator' style={{ marginLeft: '10px' }} /> {t('chat.chat_dialog.message_total')}: {message.tokens.total}
                     </div>
                   )}
                 </div>
@@ -194,7 +194,7 @@ const ChatComponent = forwardRef(({
         <Form>
           <Input
             fluid
-            placeholder="Type your message... (Shift+Enter for new line)"
+            placeholder={t('chat.chat_dialog.input_placeholder')}
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -202,7 +202,7 @@ const ChatComponent = forwardRef(({
               <Button
                 color='blue'
                 icon='send'
-                content='Send'
+                content={t('chat.chat_dialog.send_button')}
                 onClick={handleSendMessage}
                 loading={loading}
                 disabled={loading}

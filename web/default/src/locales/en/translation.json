@@ -827,5 +827,29 @@
     "notice": {
       "password_copied": "New password copied to clipboard: {{password}}"
     }
+  },
+  "chat": {
+    "chat_settings": {
+      "title": "Chat Settings",
+      "api_key": "API Key Source",
+      "api_key_placeholder": "Select API Key",
+      "select_model": "Select Model",
+      "select_model_placeholder": "Select Model",
+      "endpoint_type": "Endpoint Type",
+      "endpoint_type_placeholder": "Select Endpoint Type",
+      "clear_chat": "Clear Chat"
+    },
+    "chat_dialog": {
+      "title": "Chat with AI",
+      "start_conversation": "Start a new conversation",
+      "start_conversation_message": "Send a message to start a new conversation with the AI assistant.",
+      "input_placeholder": "Type your message... (Shift+Enter for new line)",
+      "send_button": "Send",
+      "message_in": "In",
+      "message_out": "Out",
+      "message_total": "Total",
+      "assistant_name": "Assistant",
+      "user_name": "User"
+    }
   }
 }

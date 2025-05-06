@@ -823,5 +823,29 @@
     "notice": {
       "password_copied": "新密码已复制到剪贴板：{{password}}"
     }
+  },
+  "chat": {
+    "chat_settings": {
+      "title": "聊天设置",
+      "api_key": "API 密钥来源",
+      "api_key_placeholder": "选择 API 密钥",
+      "select_model": "选择模型",
+      "select_model_placeholder": "选择模型",
+      "endpoint_type": "终端类型",
+      "endpoint_type_placeholder": "选择终端类型",
+      "clear_chat": "清除聊天记录"
+    },
+    "chat_dialog": {
+      "title": "与 AI 聊天",
+      "start_conversation": "开始新对话",
+      "start_conversation_message": "发送消息以开始与 AI 助手的新对话。",
+      "input_placeholder": "输入你的消息...（Shift+Enter 换行）",
+      "send_button": "发送",
+      "message_in": "输入",
+      "message_out": "输出",
+      "message_total": "总计",
+      "assistant_name": "助手",
+      "user_name": "用户"
+    }
   }
 }
