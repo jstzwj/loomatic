@@ -101,8 +101,8 @@ const Header = () => {
   };
 
   const renderButtons = (isMobile) => {
-    return headerButtons.map((button) => {
-      if (button.admin && !isAdmin()) return <></>;
+    return headerButtons.filter(button => !button.admin || isAdmin()).map((button) => {
+      if (button.admin && !isAdmin()) return null;
       if (isMobile) {
         return (
           <Menu.Item
@@ -155,11 +155,11 @@ const Header = () => {
           style={
             showSidebar
               ? {
-                  borderBottom: 'none',
-                  marginBottom: '0',
-                  borderTop: 'none',
-                  height: '51px',
-                }
+                borderBottom: 'none',
+                marginBottom: '0',
+                borderTop: 'none',
+                height: '51px',
+              }
               : { borderTop: 'none', height: '52px' }
           }
         >

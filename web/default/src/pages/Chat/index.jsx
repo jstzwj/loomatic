@@ -29,14 +29,30 @@ const ChatPage = () => {
   const [modelOptions, setModelOptions] = useState([]);
   const [loadingModels, setLoadingModels] = useState(false);
   const [endpointType, setEndpointType] = useState('/v1/chat/completions');
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [serverAddress, setServerAddress] = useState('');
   
   const chatRef = useRef(null);
 
   useEffect(() => {
+    fetchServerStatus();
     fetchApiTokens();
     fetchAvailableModels();
   }, []);
+
+  const fetchServerStatus = async () => {
+    try {
+      const res = await API.get('/api/status');
+      const { success, message, data } = res.data;
+      
+      if (success && data) {
+        setServerAddress(data.server_address || '');
+      } else {
+        showError(message || '获取服务器状态失败');
+      }
+    } catch (error) {
+      showError('获取服务器状态时发生错误: ' + (error.message || '未知错误'));
+    }
+  };
 
   const fetchApiTokens = async () => {
     setLoadingTokens(true);
@@ -59,19 +75,6 @@ const ChatPage = () => {
             </div>
           )
         }));
-        
-        options.unshift({
-          key: 'session',
-          text: 'Current UI Session',
-          value: 'session',
-          description: '使用当前会话凭证',
-          content: (
-            <div>
-              <div><strong>Current UI Session</strong></div>
-              <div style={{ fontSize: '0.8em', color: 'gray' }}>使用当前会话凭证</div>
-            </div>
-          )
-        });
         
         setApiKeyOptions(options);
         
@@ -145,12 +148,6 @@ const ChatPage = () => {
     { key: 'chat', text: '/v1/chat/completions', value: '/v1/chat/completions' }
   ];
 
-  const tagOptions = [
-    { key: 'important', text: 'Important', value: 'important' },
-    { key: 'work', text: 'Work', value: 'work' },
-    { key: 'personal', text: 'Personal', value: 'personal' }
-  ];
-
   const clearChat = () => {
     if (chatRef.current && chatRef.current.clearChat) {
       chatRef.current.clearChat();
@@ -164,31 +161,66 @@ const ChatPage = () => {
   };
 
   const handleSendMessage = async (message, userMessage, callback) => {
+    if (!apiKeySource) {
+      showError('空的API密钥，请选择一个API密钥');
+      // 即使出错也调用回调，以便UI可以处理加载状态
+      callback({
+        role: 'assistant',
+        content: '请先选择API密钥',
+        timestamp: new Date(),
+        tokens: { in: 0, out: 0, total: 0 },
+        time: '0s'
+      });
+      return;
+    }
     if (!apiKeySource || !selectedModel) {
       showError('请选择API密钥和模型');
+      callback({
+        role: 'assistant',
+        content: '请先选择API密钥和模型',
+        timestamp: new Date(),
+        tokens: { in: 0, out: 0, total: 0 },
+        time: '0s'
+      });
       return;
     }
 
+    if (!serverAddress) {
+      showError('服务器地址未配置');
+      callback({
+        role: 'assistant',
+        content: '服务器地址未配置',
+        timestamp: new Date(),
+        tokens: { in: 0, out: 0, total: 0 },
+        time: '0s'
+      });
+      return;
+    }
+
+    const llmUrl = new URL(serverAddress);
+    llmUrl.pathname = '/v1';
     try {
-      // 创建OpenAI客户端
       const openai = new OpenAI({
         apiKey: apiKeySource,
-        baseURL: '/api', // 假设你的后端代理了OpenAI API
+        baseURL: llmUrl.toString(),
         dangerouslyAllowBrowser: true // 仅用于演示，生产环境应该在后端处理
       });
 
-      // 获取当前聊天记录
       const currentMessages = chatRef.current.getMessages();
       
-      // 构建OpenAI格式的消息
       const messages = currentMessages.map(msg => ({
         role: msg.role,
         content: msg.content
       }));
 
+      messages.push({
+        role: 'user',
+        content: message
+      });
+      console.log('Sending messages:', messages); // 调试信息
+
       const startTime = Date.now();
-      
-      // 调用OpenAI API
+
       const completion = await openai.chat.completions.create({
         model: selectedModel,
         messages: messages,
@@ -213,7 +245,7 @@ const ChatPage = () => {
       
       callback(assistantMessage);
     } catch (error) {
-      console.error('调用OpenAI API出错:', error);
+      console.error('Failed to call OpenAI API:', error);
       showError(`请求失败: ${error.message}`);
       
       // 即使出错也调用回调，以便UI可以处理加载状态
@@ -287,22 +319,7 @@ const ChatPage = () => {
                   onChange={(e, { value }) => setEndpointType(value)}
                 />
               </div>
-              
-              <div style={{ marginBottom: '15px' }}>
-                <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
-                  <Icon name='tags' /> Tags
-                </label>
-                <Dropdown
-                  fluid
-                  multiple
-                  selection
-                  options={tagOptions}
-                  value={selectedTags}
-                  onChange={(e, { value }) => setSelectedTags(value)}
-                  placeholder="Select tags"
-                />
-              </div>
-              
+
               <Button fluid onClick={clearChat}>
                 <Icon name='trash' /> Clear Chat
               </Button>
