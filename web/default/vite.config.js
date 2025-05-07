@@ -1,13 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import pkg from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    define: {
-        'import.meta.env.VITE_APP_VERSION': JSON.stringify(pkg.version),
-    },
     plugins: [react()],
     server: {
         port: 5176,
@@ -36,7 +32,6 @@ export default defineConfig({
         }
     },
     build: {
-        outDir: '../build/default', // Matches your existing build output
         emptyOutDir: true, // Clear the output directory before building
         sourcemap: true, // Enable source maps for production
         rollupOptions: {

@@ -4,7 +4,6 @@ WORKDIR /web
 COPY ./VERSION .
 COPY ./web .
 
-RUN npm install -g npm@11.3.0
 RUN npm install --legacy-peer-deps --prefix /web/default & \
     npm install --legacy-peer-deps --prefix /web/berry & \
     npm install --legacy-peer-deps --prefix /web/air & \
@@ -17,8 +16,9 @@ RUN DISABLE_ESLINT_PLUGIN='true' REACT_APP_VERSION=$(cat ./VERSION) npm run buil
 
 FROM golang:alpine AS builder2
 
-ENV GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+# ENV GOPROXY=https://repo.nju.edu.cn/go/,direct
 
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.nju.edu.cn/g' /etc/apk/repositories
 RUN apk add --no-cache \
     gcc \
     musl-dev \
@@ -28,6 +28,8 @@ RUN apk add --no-cache \
 ENV GO111MODULE=on \
     CGO_ENABLED=1 \
     GOOS=linux
+
+ENV GOPROXY="https://repo.nju.edu.cn/go/,direct"
 
 WORKDIR /build
 

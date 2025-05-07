@@ -60,12 +60,12 @@ function App() {
           localStorage.removeItem('chat_link');
         }
         if (
-          data.version !== import.meta.env.VITE_APP_VERSION &&
+          data.version !== import.meta.env.REACT_APP_VERSION &&
           data.version !== 'v0.0.0' &&
-          import.meta.env.VITE_APP_VERSION !== ''
+          import.meta.env.REACT_APP_VERSION !== ''
         ) {
           showNotice(
-            `新版本可用：${data.version}，请使用快捷键 Shift + F5 刷新页面`
+            `新版本可用：${data.version}，当前版本：${import.meta.env.REACT_APP_VERSION}，请使用快捷键 Shift + F5 刷新页面`
           );
         }
       } else {

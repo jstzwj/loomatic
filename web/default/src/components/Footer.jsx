@@ -39,7 +39,7 @@ const Footer = () => {
         ) : (
           <div className='custom-footer'>
             <a href='https://github.com/songquanpeng/one-api' target='_blank'>
-              {systemName} {import.meta.env.VITE_APP_VERSION}{' '}
+              {systemName} {import.meta.env.REACT_APP_VERSION}{' '}
             </a>
             {t('footer.built_by')}{' '}
             <a href='https://github.com/songquanpeng' target='_blank'>

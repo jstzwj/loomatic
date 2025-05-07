@@ -1,5 +1,5 @@
 {
-  "name": "react-template",
+  "name": "oneapi-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build && rm -rf ../build/default && mv -f dist ../build/default",
+    "build": "vite build && mv -f dist ../build/default",
     "preview": "vite preview",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
