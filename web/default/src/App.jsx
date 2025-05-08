@@ -24,8 +24,11 @@ import EditRedemption from './pages/Redemption/EditRedemption';
 import TopUp from './pages/TopUp';
 import Log from './pages/Log';
 import Chat from './pages/Chat';
-import LarkOAuth from './components/LarkOAuth';
 import Dashboard from './pages/Dashboard';
+import LarkOAuth from './components/LarkOAuth';
+import Model from './pages/Model';
+import Models from './pages/Models';
+import ModelDetail from './pages/Model/Detail';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -306,6 +309,16 @@ function App() {
           </PrivateRoute>
         }
       />
+      <Route
+        path='/model'
+        element={
+          <PrivateRoute>
+            <Model />
+          </PrivateRoute>
+        }
+      />
+      <Route path="/models" element={<Models />} />
+      <Route path="/model/:modelname" element={<ModelDetail />} />
       <Route path='*' element={<NotFound />} />
     </Routes>
   );

@@ -24,15 +24,14 @@ import '../index.css';
 // Header Buttons
 let headerButtons = [
   {
-    name: 'header.channel',
-    to: '/channel',
-    icon: 'sitemap',
-    admin: true,
-  },
-  {
     name: 'header.chat',
     to: '/chat',
     icon: 'comments',
+  },
+  {
+    name: 'header.models',
+    to: '/models',
+    icon: 'cube',
   },
   {
     name: 'header.token',
@@ -40,21 +39,9 @@ let headerButtons = [
     icon: 'key',
   },
   {
-    name: 'header.redemption',
-    to: '/redemption',
-    icon: 'dollar sign',
-    admin: true,
-  },
-  {
     name: 'header.topup',
     to: '/topup',
     icon: 'cart',
-  },
-  {
-    name: 'header.user',
-    to: '/user',
-    icon: 'user',
-    admin: true,
   },
   {
     name: 'header.dashboard',
@@ -65,6 +52,33 @@ let headerButtons = [
     name: 'header.log',
     to: '/log',
     icon: 'book',
+  },
+  {
+    name: 'header.manage',
+    icon: 'setting',
+    admin: true,
+    subMenu: [
+      {
+        name: 'header.channel',
+        to: '/channel',
+        icon: 'sitemap',
+      },
+      {
+        name: 'header.redemption',
+        to: '/redemption',
+        icon: 'dollar sign',
+      },
+      {
+        name: 'header.user',
+        to: '/user',
+        icon: 'user',
+      },
+      {
+        name: 'header.models',
+        to: '/model',
+        icon: 'cube',
+      },
+    ],
   },
   {
     name: 'header.setting',
@@ -103,6 +117,49 @@ const Header = () => {
   const renderButtons = (isMobile) => {
     return headerButtons.filter(button => !button.admin || isAdmin()).map((button) => {
       if (button.admin && !isAdmin()) return null;
+      if (button.subMenu && isAdmin()) {
+        // 管理下拉菜单
+        if (isMobile) {
+          return (
+            <Dropdown item text={t(button.name)} key={button.name} icon={button.icon}>
+              <Dropdown.Menu>
+                {button.subMenu.map((sub) => (
+                  <Dropdown.Item
+                    key={sub.name}
+                    onClick={() => {
+                      navigate(sub.to);
+                      setShowSidebar(false);
+                    }}
+                  >
+                    <Icon name={sub.icon} style={{ marginRight: '4px' }} />
+                    {t(sub.name)}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          );
+        }
+        return (
+          <Dropdown item icon={button.icon} text={t(button.name)} key={button.name} style={{
+            fontSize: '15px',
+            fontWeight: '400',
+            color: '#666',
+          }}>
+            <Dropdown.Menu>
+              {button.subMenu.map((sub) => (
+                <Dropdown.Item
+                  key={sub.name}
+                  as={Link}
+                  to={sub.to}
+                >
+                  <Icon name={sub.icon} style={{ marginRight: '4px' }} />
+                  {t(sub.name)}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        );
+      }
       if (isMobile) {
         return (
           <Menu.Item

@@ -6,6 +6,10 @@ import { isRoot } from '../../helpers';
 import OtherSetting from '../../components/OtherSetting';
 import PersonalSetting from '../../components/PersonalSetting';
 import OperationSetting from '../../components/OperationSetting';
+import ChannelsTable from '../../components/ChannelsTable';
+import RedemptionsTable from '../../components/RedemptionsTable';
+import UsersTable from '../../components/UsersTable';
+import ModelsTable from '../../components/ModelsTable';
 
 const Setting = () => {
   const { t } = useTranslation();
@@ -22,6 +26,48 @@ const Setting = () => {
   ];
 
   if (isRoot()) {
+    panes.unshift({
+      menuItem: t('header.manage'),
+      render: () => (
+        <Tab
+          menu={{ secondary: true, pointing: true }}
+          panes={[
+            {
+              menuItem: t('header.channel'),
+              render: () => (
+                <Tab.Pane attached={false}>
+                  <ChannelsTable />
+                </Tab.Pane>
+              ),
+            },
+            {
+              menuItem: t('header.redemption'),
+              render: () => (
+                <Tab.Pane attached={false}>
+                  <RedemptionsTable />
+                </Tab.Pane>
+              ),
+            },
+            {
+              menuItem: t('header.user'),
+              render: () => (
+                <Tab.Pane attached={false}>
+                  <UsersTable />
+                </Tab.Pane>
+              ),
+            },
+            {
+              menuItem: t('header.models'),
+              render: () => (
+                <Tab.Pane attached={false}>
+                  <ModelsTable />
+                </Tab.Pane>
+              ),
+            },
+          ]}
+        />
+      ),
+    });
     panes.push({
       menuItem: t('setting.tabs.operation'),
       render: () => (

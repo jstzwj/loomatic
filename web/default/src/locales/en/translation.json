@@ -13,7 +13,9 @@
     "chat": "Chat",
     "login": "Login",
     "logout": "Logout",
-    "register": "Register"
+    "register": "Register",
+    "manage": "Manage",
+    "models": "Models"
   },
   "topup": {
     "title": "Top Up Center",
@@ -853,5 +855,37 @@
       "assistant_name": "Assistant",
       "user_name": "User"
     }
+  },
+  "model": {
+    "management": "Models",
+    "subtitle": "Add and manage models for the proxy",
+    "add": "Add Model",
+    "delete_selected": "Delete Selected",
+    "filter_name": "Filter by Public Model Name",
+    "filter_team": "Filter by Team",
+    "showing": "Showing {{count}} results",
+    "id": "Model ID",
+    "name": "Public Model Name",
+    "provider": "Provider",
+    "litellm": "LiteLLM Model Name",
+    "created_at": "Created At",
+    "updated_at": "Updated At",
+    "created_by": "Created By",
+    "input_cost": "Input Cost",
+    "output_cost": "Output Cost",
+    "team": "Team",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "filter": "Filter",
+    "input_modalities": "Input Modalities",
+    "context_length": "Context Length",
+    "prompt_pricing": "Prompt Pricing",
+    "series": "Series",
+    "categories": "Categories",
+    "search_placeholder": "Search models...",
+    "sort": "Sort",
+    "no_result": "No results found",
+    "not_found": "Model not found"
   }
 }

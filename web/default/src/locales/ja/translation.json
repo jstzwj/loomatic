@@ -13,7 +13,9 @@
     "chat": "チャット",
     "login": "ログイン",
     "logout": "ログアウト",
-    "register": "登録"
+    "register": "登録",
+    "manage": "管理",
+    "models": "モデル"
   },
   "topup": {
     "title": "チャージセンター",
@@ -849,5 +851,37 @@
       "assistant_name": "アシスタント",
       "user_name": "ユーザー"
     }
+  },
+  "model": {
+    "management": "モデル",
+    "subtitle": "プロキシ用モデルの追加と管理",
+    "add": "モデル追加",
+    "delete_selected": "選択を削除",
+    "filter_name": "公開モデル名でフィルタ",
+    "filter_team": "チームでフィルタ",
+    "showing": "{{count}} 件の結果を表示中",
+    "id": "モデルID",
+    "name": "公開モデル名",
+    "provider": "プロバイダー",
+    "litellm": "LiteLLMモデル名",
+    "created_at": "作成日時",
+    "updated_at": "更新日時",
+    "created_by": "作成者",
+    "input_cost": "入力価格",
+    "output_cost": "出力価格",
+    "team": "チーム",
+    "actions": "操作",
+    "edit": "編集",
+    "delete": "削除",
+    "filter": "フィルター",
+    "input_modalities": "入力モダリティ",
+    "context_length": "コンテキスト長",
+    "prompt_pricing": "プロンプト価格",
+    "series": "シリーズ",
+    "categories": "カテゴリ",
+    "search_placeholder": "モデルを検索...",
+    "sort": "並び替え",
+    "no_result": "結果がありません",
+    "not_found": "モデルが見つかりません"
   }
 }

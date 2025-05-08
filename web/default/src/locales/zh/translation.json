@@ -13,7 +13,9 @@
     "chat": "聊天",
     "login": "登录",
     "logout": "注销",
-    "register": "注册"
+    "register": "注册",
+    "manage": "管理",
+    "models": "模型"
   },
   "topup": {
     "title": "充值中心",
@@ -849,5 +851,37 @@
       "assistant_name": "助手",
       "user_name": "用户"
     }
+  },
+  "model": {
+    "management": "模型",
+    "subtitle": "添加和管理代理可用的模型",
+    "add": "添加模型",
+    "delete_selected": "批量删除",
+    "filter_name": "按公开模型名筛选",
+    "filter_team": "按团队筛选",
+    "showing": "共 {{count}} 条结果",
+    "id": "模型ID",
+    "name": "公开模型名",
+    "provider": "提供方",
+    "litellm": "LiteLLM模型名",
+    "created_at": "创建时间",
+    "updated_at": "更新时间",
+    "created_by": "创建人",
+    "input_cost": "输入价格",
+    "output_cost": "输出价格",
+    "team": "团队",
+    "actions": "操作",
+    "edit": "编辑",
+    "delete": "删除",
+    "filter": "筛选",
+    "input_modalities": "输入模态",
+    "context_length": "Context 长度",
+    "prompt_pricing": "价格",
+    "series": "系列",
+    "categories": "分类",
+    "search_placeholder": "搜索模型...",
+    "sort": "排序",
+    "no_result": "暂无结果",
+    "not_found": "未找到该模型"
   }
 }
