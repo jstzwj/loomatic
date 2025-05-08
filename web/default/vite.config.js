@@ -47,6 +47,7 @@ export default defineConfig({
             }
         }
     },
+    envPrefix: ['VITE_', 'REACT_APP_'],
     optimizeDeps: {
         include: [
             'react',
